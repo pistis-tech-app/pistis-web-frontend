@@ -82,7 +82,7 @@ Bun.serve({
         pendingDeletions.set(userId, { email: mail, createdAt: new Date() });
 
         // Simular envío de correo (mostrar en consola)
-        const deleteLink = `http://localhost:5173/Pistis-users-data-management/user/delete-request?user_id=${userId}`;
+        const deleteLink = `http://localhost:5173/pistis-delete-account/user/delete-request?user_id=${userId}`;
 
         console.log("\n" + "=".repeat(60));
         console.log("📧 SIMULACIÓN DE CORREO ENVIADO");

@@ -101,7 +101,7 @@ export function ConfirmDeletePage() {
     <Layout>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <img
-          src="/Pistis-users-data-management/thinking.png"
+          src="/pistis-delete-account/thinking.png"
           alt="Pensando"
           className="w-40 h-40 mx-auto mb-4 object-contain"
         />

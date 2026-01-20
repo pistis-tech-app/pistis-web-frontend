@@ -11,8 +11,8 @@ export default defineConfig({
       name: 'redirect-without-trailing-slash',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
-          if (req.url === '/Pistis-users-data-management') {
-            res.writeHead(302, { Location: '/Pistis-users-data-management/' });
+          if (req.url === '/pistis-delete-account') {
+            res.writeHead(302, { Location: '/pistis-delete-account/' });
             res.end();
             return;
           }
@@ -21,5 +21,5 @@ export default defineConfig({
       },
     },
   ],
-  base: '/Pistis-users-data-management/',
+  base: '/pistis-delete-account/',
 })

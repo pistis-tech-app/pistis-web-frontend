@@ -10,7 +10,7 @@ export function Layout({ children }: LayoutProps) {
       <header className="bg-[rgb(249,249,255)] py-4">
         <div className="max-w-md mx-auto px-4 flex items-center justify-center">
           <img
-            src="/Pistis-users-data-management/logo.png"
+            src="/pistis-delete-account/logo.png"
             alt="Pistis"
             className="h-10"
           />

@@ -6,7 +6,7 @@ import { SuccessPage } from './pages/SuccessPage';
 
 function App() {
   return (
-    <BrowserRouter basename="/Pistis-users-data-management">
+    <BrowserRouter basename="/pistis-delete-account">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/check-email" element={<CheckEmailPage />} />

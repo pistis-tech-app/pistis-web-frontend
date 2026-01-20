@@ -13,7 +13,7 @@ export function SuccessPage() {
     <Layout>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
         <img
-          src="/Pistis-users-data-management/success.png"
+          src="/pistis-delete-account/success.png"
           alt="Éxito"
           className="w-40 h-40 mx-auto mb-4 object-contain"
         />
