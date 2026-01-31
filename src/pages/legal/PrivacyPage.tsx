@@ -19,7 +19,7 @@ export function PrivacyPage() {
 					<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12">
 						<div className="legal-content">
 							<header id="title-block-header">
-								<h1 className="title">Política de Tratamiento de Datos Personales</h1>
+								<h1 className="title">Política De Tratamiento De Datos Personales</h1>
 							</header>
 							<h2 id="tratamiento-de-datos-personales">1. Tratamiento De Datos Personales</h2>
 							<p>
@@ -820,7 +820,7 @@ export function PrivacyPage() {
 								nuestra Política de Tratamiento de Datos Personales, la cual se encuentra publicada en
 								www.pistisgroup.co
 							</p>
-							<h2>Aviso de Privacidad – PISTIS</h2>
+							<h2>Aviso De Privacidad – PISTIS</h2>
 							<p>
 								PISTIS GROUP S.A.S es responsable del tratamiento de los datos personales recolectados a través de esta
 								App. Usamos tu información para: 1. Crear y administrar tu cuenta en la App. 2. Verificar tu pertenencia

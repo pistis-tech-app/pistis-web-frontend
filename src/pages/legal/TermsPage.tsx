@@ -19,7 +19,7 @@ export function TermsPage() {
 					<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12">
 						<div className="legal-content">
 							<header id="title-block-header">
-								<h1 className="title">Términos y Condiciones</h1>
+								<h1 className="title">Términos Y Condiciones</h1>
 							</header>
 							<h2 id="introducción-y-aspectos-básicos">1. Introducción Y Aspectos Básicos</h2>
 							<p>
