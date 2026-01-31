@@ -9,7 +9,7 @@ describe('NotFoundPage', () => {
 		return render(
 			<BrowserRouter>
 				<NotFoundPage />
-			</BrowserRouter>,
+			</BrowserRouter>
 		);
 	};
 
@@ -29,7 +29,10 @@ describe('NotFoundPage', () => {
 		it('should display helpful description', () => {
 			renderWithRouter();
 
-			expect(screen.queryByText(/Parece que esta página se ha perdido en el camino/i) || screen.queryByText(/No te preocupes/i)).not.toBeNull();
+			expect(
+				screen.queryByText(/Parece que esta página se ha perdido en el camino/i) ||
+					screen.queryByText(/No te preocupes/i)
+			).not.toBeNull();
 		});
 	});
 
@@ -80,8 +83,7 @@ describe('NotFoundPage', () => {
 			const user = userEvent.setup();
 			renderWithRouter();
 
-			const homeButton =
-				screen.queryByRole('button', { name: /volver al inicio/i }) || screen.getAllByRole('link')[0];
+			const homeButton = screen.queryByRole('button', { name: /volver al inicio/i }) || screen.getAllByRole('link')[0];
 			await user.click(homeButton);
 
 			expect(homeButton).toBeTruthy();

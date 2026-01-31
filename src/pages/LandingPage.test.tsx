@@ -8,7 +8,7 @@ describe('LandingPage', () => {
 		return render(
 			<BrowserRouter>
 				<LandingPage />
-			</BrowserRouter>,
+			</BrowserRouter>
 		);
 	};
 

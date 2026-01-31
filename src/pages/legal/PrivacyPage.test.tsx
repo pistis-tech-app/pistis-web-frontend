@@ -9,7 +9,7 @@ describe('PrivacyPage', () => {
 		return render(
 			<BrowserRouter>
 				<PrivacyPage />
-			</BrowserRouter>,
+			</BrowserRouter>
 		);
 	};
 
@@ -131,7 +131,11 @@ describe('PrivacyPage', () => {
 			renderWithRouter();
 
 			const bodyText = document.body.textContent || '';
-			expect(bodyText.includes('@') || bodyText.toLowerCase().includes('correo') || bodyText.toLowerCase().includes('contacto')).toBeTruthy();
+			expect(
+				bodyText.includes('@') ||
+					bodyText.toLowerCase().includes('correo') ||
+					bodyText.toLowerCase().includes('contacto')
+			).toBeTruthy();
 		});
 	});
 });

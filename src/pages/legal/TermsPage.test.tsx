@@ -9,7 +9,7 @@ describe('TermsPage', () => {
 		return render(
 			<BrowserRouter>
 				<TermsPage />
-			</BrowserRouter>,
+			</BrowserRouter>
 		);
 	};
 
