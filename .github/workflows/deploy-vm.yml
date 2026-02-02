@@ -1,0 +1,73 @@
+name: Deploy to VM
+
+# ========================================================================
+# PIPELINE PARA DESPLEGAR FRONTEND A LA VM VIA CLOUD STORAGE
+# ========================================================================
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  GCS_BUCKET: ${{ secrets.GCS_FRONTEND_BUCKET }}
+  BUILD_FILENAME: frontend-build.zip
+
+jobs:
+  build-and-upload:
+    name: 'Build and Upload to GCS'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+
+      - name: Create ZIP
+        run: |
+          cd dist
+          zip -r ../${{ env.BUILD_FILENAME }} .
+          cd ..
+          ls -la ${{ env.BUILD_FILENAME }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Upload to Cloud Storage
+        run: |
+          gsutil cp ${{ env.BUILD_FILENAME }} gs://${{ env.GCS_BUCKET }}/${{ env.BUILD_FILENAME }}
+          gsutil cp ${{ env.BUILD_FILENAME }} gs://${{ env.GCS_BUCKET }}/builds/frontend-build-${{ github.sha }}.zip
+          echo "Build uploaded to gs://${{ env.GCS_BUCKET }}/${{ env.BUILD_FILENAME }}"
+
+      - name: Trigger deploy to VM
+        if: success()
+        run: |
+          echo "=============================================================="
+          echo "Build subido a Cloud Storage"
+          echo "=============================================================="
+          echo ""
+          echo "Para desplegar a la VM, ejecuta el workflow 'Ansible Provision'"
+          echo "en el repositorio pistis-infrastructure con playbook: deploy-frontend.yml"
+          echo ""
+          echo "O ejecuta manualmente en la VM:"
+          echo "  gsutil cp gs://${{ env.GCS_BUCKET }}/${{ env.BUILD_FILENAME }} /tmp/"
+          echo "  sudo unzip -o /tmp/${{ env.BUILD_FILENAME }} -d /var/www/pistis-web-frontend/"
+          echo "=============================================================="
