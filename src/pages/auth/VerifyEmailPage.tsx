@@ -2,7 +2,7 @@
  * Página de verificación de email mediante token
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Layout } from '../../components/Layout';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
@@ -18,14 +18,20 @@ export function VerifyEmailPage() {
 	const [state, setState] = useState<VerificationState>('loading');
 	const [errorMessage, setErrorMessage] = useState('');
 	const token = searchParams.get('token');
+	const hasVerified = useRef(false);
 
 	useEffect(() => {
+		// Evitar doble llamada en React StrictMode (desarrollo)
+		if (hasVerified.current) return;
+
 		const verifyEmail = async () => {
 			if (!token) {
 				setState('error');
 				setErrorMessage('Token de verificación no proporcionado. Por favor, usa el enlace completo del correo.');
 				return;
 			}
+
+			hasVerified.current = true;
 
 			try {
 				await verifyEmailByToken(token);
