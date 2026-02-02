@@ -1,10 +1,13 @@
 /**
- * Servidor de prueba para la aplicación de eliminación de cuentas de Pistis
+ * Servidor de prueba para la aplicación de Pistis
  *
- * Este servidor simula el backend para probar el flujo completo.
+ * Este servidor simula el backend para probar los flujos de:
+ * 1. Eliminación de cuenta
+ * 2. Verificación de email
  *
  * ENDPOINTS:
  *
+ * === ELIMINACIÓN DE CUENTA ===
  * 1. POST /user/delete-request
  *    Body: { "mail": "usuario@email.com" }
  *    Response: { "success": true }
@@ -17,12 +20,18 @@
  * 3. GET /user/delete-request?user_id=xxx&action=true
  *    Response: { "message": "El proceso de eliminación para el usuario xxx ha sido iniciado" }
  *    Acción: Confirma la eliminación de la cuenta
+ *
+ * === VERIFICACIÓN DE EMAIL ===
+ * 4. GET /auth/verify-email/:token
+ *    Response: { "message": "Correo verificado exitosamente" }
+ *    Acción: Verifica el correo del usuario
  */
 
 const PORT = 3001;
 
 // Base de datos en memoria para simular usuarios
 const pendingDeletions = new Map<string, { email: string; createdAt: Date }>();
+const pendingVerifications = new Map<string, { email: string; createdAt: Date; verified: boolean }>();
 
 // Descripción de datos que se mostrarán al usuario
 const DELETION_DESCRIPTION = `Datos que serán eliminados:
@@ -82,10 +91,10 @@ Bun.serve({
         pendingDeletions.set(userId, { email: mail, createdAt: new Date() });
 
         // Simular envío de correo (mostrar en consola)
-        const deleteLink = `http://localhost:5173/pistis-delete-account/user/delete-request?user_id=${userId}`;
+        const deleteLink = `http://localhost:5173/user/delete-request?user_id=${userId}`;
 
         console.log("\n" + "=".repeat(60));
-        console.log("📧 SIMULACIÓN DE CORREO ENVIADO");
+        console.log("📧 SIMULACIÓN DE CORREO - ELIMINACIÓN DE CUENTA");
         console.log("=".repeat(60));
         console.log(`Para: ${mail}`);
         console.log(`Asunto: Confirma la eliminación de tu cuenta de Pistis`);
@@ -164,6 +173,64 @@ Bun.serve({
       );
     }
 
+    // GET /auth/verify-email/:token - Verificar email
+    if (path.startsWith("/auth/verify-email/") && req.method === "GET") {
+      const token = path.split("/auth/verify-email/")[1];
+
+      if (!token) {
+        return new Response(
+          JSON.stringify({ error: "Token no proporcionado" }),
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      // Buscar token en "base de datos"
+      const verification = pendingVerifications.get(token);
+
+      if (!verification) {
+        // Si el token no existe, simulamos que es un token de prueba válido
+        console.log("\n" + "=".repeat(60));
+        console.log("✅ EMAIL VERIFICADO (Simulación)");
+        console.log("=".repeat(60));
+        console.log(`Token: ${token}`);
+        console.log(`Fecha: ${new Date().toISOString()}`);
+        console.log("=".repeat(60) + "\n");
+
+        return new Response(
+          JSON.stringify({
+            message: "Correo verificado exitosamente"
+          }),
+          { status: 200, headers: corsHeaders }
+        );
+      }
+
+      // Si ya fue verificado
+      if (verification.verified) {
+        return new Response(
+          JSON.stringify({ error: "Este correo ya ha sido verificado" }),
+          { status: 409, headers: corsHeaders }
+        );
+      }
+
+      // Marcar como verificado
+      verification.verified = true;
+
+      console.log("\n" + "=".repeat(60));
+      console.log("✅ EMAIL VERIFICADO");
+      console.log("=".repeat(60));
+      console.log(`Email: ${verification.email}`);
+      console.log(`Token: ${token}`);
+      console.log(`Fecha: ${new Date().toISOString()}`);
+      console.log("=".repeat(60) + "\n");
+
+      return new Response(
+        JSON.stringify({
+          message: "Correo verificado exitosamente"
+        }),
+        { status: 200, headers: corsHeaders }
+      );
+    }
+
     // 404 para rutas no encontradas
     return new Response(
       JSON.stringify({ error: "Ruta no encontrada" }),
@@ -180,6 +247,7 @@ console.log(`
 ╠════════════════════════════════════════════════════════════╣
 ║  ENDPOINTS DISPONIBLES:                                    ║
 ║                                                            ║
+║  === ELIMINACIÓN DE CUENTA ===                             ║
 ║  POST /user/delete-request                                 ║
 ║       Body: { "mail": "usuario@email.com" }                ║
 ║       → Inicia solicitud y muestra link en consola         ║
@@ -189,5 +257,11 @@ console.log(`
 ║                                                            ║
 ║  GET  /user/delete-request?user_id=xxx&action=true         ║
 ║       → Confirma eliminación de cuenta                     ║
+║                                                            ║
+║  === VERIFICACIÓN DE EMAIL ===                             ║
+║  GET  /auth/verify-email/:token                            ║
+║       → Verifica el email del usuario                      ║
+║                                                            ║
 ╚════════════════════════════════════════════════════════════╝
 `);
+
