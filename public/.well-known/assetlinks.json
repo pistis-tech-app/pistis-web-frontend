@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.pistis.app",
+      "sha256_cert_fingerprints": [
+        "3E:12:7F:AA:FF:42:EA:6F:C0:5D:86:82:37:FD:7F:CD:C1:D8:67:BD:66:55:87:04:28:D3:AA:C5:AC:C6:6F:4F"
+      ]
+    }
+  }
+]
